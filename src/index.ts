@@ -28,7 +28,15 @@ const main = async () => {
             author_id: 5
         }).executeTakeFirst();
 
-    const result = await db
+    await db
+        .updateTable('category')
+        .set({
+            category_name: 'krimi - detektívka',
+        })
+        .where('category_name', '=', 'krimi')
+        .executeTakeFirst();
+
+    const selectResult = await db
         .selectFrom('author')
         .innerJoin('book', 'book.author_id', 'author.id')
         .innerJoin('category', 'category.id', 'book.category_id')
@@ -37,7 +45,7 @@ const main = async () => {
             'category.category_name'])
         .execute();
 
-    console.log(result)
+    console.log(selectResult)
 }
 
 main()
